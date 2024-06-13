@@ -2,6 +2,7 @@ from utils.common import read_video, save_video
 from trackers.player_trackers import PlayerTracker
 from trackers.ball_tracker import BallTracker
 from court_line_detector.court_line_detector import CourtLineDetector
+import torch
 
 
 def main():
@@ -22,21 +23,27 @@ def main():
                                                  stub_path="tracker_stubs/ball_detections.pkl")
     
     # detect court lines
-    court_model_path = "models\keypoints_model.pth"
-    court_line_detector = CourtLineDetector(model_path=court_model_path)
+    #court_model_path = "models\keypoints.pth"
+    #court_model_path = "models/keypoints_model.pth"
+    #court_model_path = "models\keypoints_model (1).pth"
+    court_model_path = "models\keypoints_model (2).pth"
+    court_line_detector = CourtLineDetector(court_model_path)
     court_keypoints = court_line_detector.predict(video_frames[0])
 
+
     # draw player bounding box
-    output_video_frames = player_tracker.draw_bbox(video_frames, player_detections)
+    output_video_frames = player_tracker.draw_bboxes(video_frames, player_detections)
 
     # draw ball bounding box
-    output_video_frames = ball_tracker.draw_bbox(video_frames, ball_detections)
+    output_video_frames = ball_tracker.draw_bboxes(video_frames, ball_detections)
 
     # draw court lines keypoints
     output_video_frames = court_line_detector.draw_keypoints_on_video(output_video_frames, court_keypoints)
 
     # save video
     save_video(output_video_frames, "output_videos/output_video.avi")
+
+    torch.cuda.empty_cache()
 
 if __name__ == "__main__":
     main()

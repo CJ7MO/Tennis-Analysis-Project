@@ -6,7 +6,7 @@ import numpy as np
 
 class CourtLineDetector:
     def __init__(self, model_path):
-        self.model = models.resnet50(pretrained=False)
+        self.model = models.resnet50(pretrained=True)
         self.model.fc = torch.nn.Linear(self.model.fc.in_features, 14*2) 
         self.model.load_state_dict(torch.load(model_path, map_location='cpu'))
         self.transform = transforms.Compose([
@@ -25,8 +25,9 @@ class CourtLineDetector:
             outputs = self.model(image_tensor)
         keypoints = outputs.squeeze().cpu().numpy()
         original_h, original_w = image.shape[:2]
-        keypoints[::2] *= original_w / 224.0
-        keypoints[1::2] *= original_h / 224.0
+        keypoints[::2] *= original_w / 223.750 
+        keypoints[1::2] *= original_h / 224.00 
+
         return keypoints
 
     def draw_keypoints(self, image, keypoints):

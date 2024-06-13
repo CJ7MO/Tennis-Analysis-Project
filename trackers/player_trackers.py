@@ -1,13 +1,15 @@
-from ultralytics import YOLO
+from ultralytics import YOLO 
 import cv2
 import pickle
+import sys
+sys.path.append('../')
+#from utils import measure_distance, get_center_of_bbox
 
 class PlayerTracker:
-    def __init__(self, model_path):
+    def __init__(self,model_path):
         self.model = YOLO(model_path)
 
-
-    def detect_frames(self, frames, read_from_stub=False, stub_path=None):
+    def detect_frames(self,frames, read_from_stub=False, stub_path=None):
         player_detections = []
 
         if read_from_stub and stub_path is not None:
@@ -18,11 +20,11 @@ class PlayerTracker:
         for frame in frames:
             player_dict = self.detect_frame(frame)
             player_detections.append(player_dict)
-
+        
         if stub_path is not None:
             with open(stub_path, 'wb') as f:
                 pickle.dump(player_detections, f)
-
+        
         return player_detections
 
     def detect_frame(self,frame):
@@ -39,9 +41,8 @@ class PlayerTracker:
                 player_dict[track_id] = result
         
         return player_dict
-    
 
-    def draw_bbox(self,video_frames, player_detections):
+    def draw_bboxes(self,video_frames, player_detections):
         output_video_frames = []
         for frame, player_dict in zip(video_frames, player_detections):
             # Draw Bounding Boxes
@@ -53,3 +54,5 @@ class PlayerTracker:
         
         return output_video_frames
 
+
+    
