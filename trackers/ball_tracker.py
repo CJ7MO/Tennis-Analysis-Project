@@ -7,18 +7,18 @@ class BallTracker:
     def __init__(self,model_path):
         self.model = YOLO(model_path)
 
-    def interpolate_ball_positions(self, ball_positions):
-        ball_positions = [x.get(1,[]) for x in ball_positions]
-        # convert the list into pandas dataframe
-        df_ball_positions = pd.DataFrame(ball_positions,columns=['x1','y1','x2','y2'])
+    def interpolate_ball_positions(self, ball_detections):
+        ball_detections = [x.get(1, []) for x in ball_detections]
 
-        # interpolate the missing values
+        df_ball_positions = pd.DataFrame(ball_detections, columns=['x1', 'y1', 'x2', 'y2'])
+
         df_ball_positions = df_ball_positions.interpolate()
         df_ball_positions = df_ball_positions.bfill()
 
-        ball_positions = [{1:x} for x in df_ball_positions.to_numpy().tolist()]
+        ball_detections = [{1:x} for x in df_ball_positions.to_numpy().tolist()]
 
-        return ball_positions
+        return ball_detections
+    
 
     def get_ball_shot_frames(self,ball_positions):
         ball_positions = [x.get(1,[]) for x in ball_positions]
@@ -52,6 +52,7 @@ class BallTracker:
         frame_nums_with_ball_hits = df_ball_positions[df_ball_positions['ball_hit']==1].index.tolist()
 
         return frame_nums_with_ball_hits
+
 
     def detect_frames(self,frames, read_from_stub=False, stub_path=None):
         ball_detections = []
