@@ -1,9 +1,7 @@
 import cv2
 import numpy as np
-import sys
-sys.path.append('../')
-import constants
-from utils.common import (
+from src.tennisAnalysis import constants
+from src.tennisAnalysis.utils.common import (
     convert_meters_to_pixel_distance,
     convert_pixel_distance_to_meters,
     get_foot_position,

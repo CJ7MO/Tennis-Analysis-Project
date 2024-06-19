@@ -3,7 +3,7 @@ import cv2
 import pickle
 import sys
 sys.path.append('../')
-from utils.common import measure_distance, get_center_of_bbox
+from src.tennisAnalysis.utils.common import measure_distance, get_center_of_bbox
 
 class PlayerTracker:
     def __init__(self,model_path):

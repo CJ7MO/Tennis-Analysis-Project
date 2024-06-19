@@ -1,13 +1,13 @@
-from utils.common import read_video, save_video
-from trackers.player_trackers import PlayerTracker
-from trackers.ball_tracker import BallTracker
-from court_line_detector.court_line_detector import CourtLineDetector
-from mini_court.mini_court import MiniCourt
+from src.tennisAnalysis.utils.common import read_video, save_video
+from src.tennisAnalysis.components.player_tracker import PlayerTracker
+from src.tennisAnalysis.components.ball_tracker import BallTracker
+from src.tennisAnalysis.components.court_line_detector import CourtLineDetector
+from src.tennisAnalysis.components.mini_court import MiniCourt
 import pandas as pd
 from copy import deepcopy
 import cv2
-import constants
-from utils.common import (read_video, 
+from src.tennisAnalysis import constants
+from src.tennisAnalysis.utils.common import (read_video, 
                    save_video,
                    measure_distance,
                    draw_player_stats,
