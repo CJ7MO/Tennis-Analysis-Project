@@ -166,5 +166,4 @@ models/*
 tennis-ball-detection-6
 
 yolov8x.pt
-output_videos/*
 tracker_stubs/
